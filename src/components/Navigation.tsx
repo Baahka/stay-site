@@ -10,7 +10,7 @@ export function Navigation() {
   const navLinks = [
     { label: 'Loja', page: 'shop' as const },
     { label: 'Suporte', page: 'home' as const, section: 'support' },
-    { label: 'Discord', page: 'home' as const, external: 'https://discord.gg' },
+    { label: 'Discord', page: 'home' as const, external: 'https://discord.gg/UDrM8bTrrU' },
   ];
 
   const handleNavClick = (link: typeof navLinks[0]) => {
