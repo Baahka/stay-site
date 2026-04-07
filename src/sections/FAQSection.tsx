@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const faqs = [
   {
-    question: 'Quanto tempo demora a entrega?',
+    question: 'Quanto tempo demora a entrega? teste',
     answer: 'A maioria dos itens é entregue automaticamente em poucos minutos após a confirmação do pagamento. Em casos raros, pode levar até 15 minutos dependendo da carga do servidor.',
   },
   {
