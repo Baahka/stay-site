@@ -1,12 +1,32 @@
-import { ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Trash2, ArrowRight, Minus, Plus, Ticket } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function CartDrawer() {
-  const { cart, removeFromCart, cartTotal, cartCount, setCurrentPage } = useApp();
+  const {
+    cart,
+    removeFromCart,
+    cartTotal,
+    cartCount,
+    setCurrentPage,
+    updateCartItemQuantity,
+    couponCodeInput,
+    setCouponCodeInput,
+    applyCoupon,
+    appliedCoupon,
+    couponError,
+    discountAmount,
+    finalTotal,
+    clearCoupon,
+    isCartOpen,
+    setCartOpen,
+  } = useApp();
 
   const handleCheckout = () => {
+    if (cart.length === 0) return;
+    setCartOpen(false);
     setCurrentPage('checkout');
   };
 
@@ -15,7 +35,7 @@ export function CartDrawer() {
   };
 
   return (
-    <Sheet>
+    <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
       <SheetTrigger asChild>
         <button className="relative p-2 text-muted-foreground hover:text-foreground transition-colors">
           <ShoppingBag className="w-5 h-5" />
@@ -62,8 +82,24 @@ export function CartDrawer() {
                         {formatPrice(item.product.price)}
                       </p>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-muted-foreground">x{item.quantity}</span>
+                    <div className="flex flex-col items-end space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => updateCartItemQuantity(item.product.id, item.quantity - 1)}
+                          className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                          aria-label="Diminuir quantidade"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="text-sm text-muted-foreground min-w-5 text-center">{item.quantity}</span>
+                        <button
+                          onClick={() => updateCartItemQuantity(item.product.id, item.quantity + 1)}
+                          className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                          aria-label="Aumentar quantidade"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                       <button
                         onClick={() => removeFromCart(item.product.id)}
                         className="p-2 text-muted-foreground hover:text-destructive transition-colors"
@@ -80,15 +116,47 @@ export function CartDrawer() {
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="text-lg font-semibold text-foreground">{formatPrice(cartTotal)}</span>
                 </div>
-                <SheetTrigger asChild>
-                  <Button
-                    onClick={handleCheckout}
-                    className="w-full btn-primary"
-                  >
-                    Finalizar Compra
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </SheetTrigger>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      value={couponCodeInput}
+                      onChange={(e) => setCouponCodeInput(e.target.value)}
+                      placeholder="Cupom"
+                      className="h-10"
+                    />
+                    <Button onClick={applyCoupon} variant="outline" className="h-10">
+                      <Ticket className="w-4 h-4 mr-2" />
+                      Aplicar
+                    </Button>
+                  </div>
+                  {couponError && (
+                    <p className="text-sm text-destructive">{couponError}</p>
+                  )}
+                  {appliedCoupon && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-primary">Cupom {appliedCoupon} aplicado</span>
+                      <button onClick={clearCoupon} className="text-muted-foreground hover:text-foreground transition-colors">
+                        Remover
+                      </button>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Desconto</span>
+                    <span className="text-foreground">- {formatPrice(discountAmount)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-foreground">Total</span>
+                    <span className="text-lg font-semibold text-primary">{formatPrice(finalTotal)}</span>
+                  </div>
+                </div>
+                <Button
+                  onClick={handleCheckout}
+                  className="w-full btn-primary"
+                  disabled={cart.length === 0}
+                >
+                  Finalizar Compra
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               </div>
             </>
           )}

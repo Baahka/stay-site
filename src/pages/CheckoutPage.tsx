@@ -15,6 +15,9 @@ export function CheckoutPage() {
   const { 
     cart, 
     cartTotal, 
+    discountAmount,
+    finalTotal,
+    appliedCoupon,
     setCurrentPage, 
     currentStep, 
     setCurrentStep,
@@ -103,7 +106,7 @@ export function CheckoutPage() {
     if (currentStep > 1) {
       setCurrentStep((currentStep - 1) as CheckoutStep);
     } else {
-      setCurrentPage('shop');
+      setCurrentPage('cart');
     }
   };
 
@@ -510,9 +513,15 @@ export function CheckoutPage() {
                   <span className="text-muted-foreground">Taxa</span>
                   <span className="text-foreground">R$ 0,00</span>
                 </div>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-muted-foreground">
+                    Desconto {appliedCoupon ? `(${appliedCoupon})` : ''}
+                  </span>
+                  <span className="text-foreground">- {formatPrice(discountAmount)}</span>
+                </div>
                 <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
                   <span className="text-lg font-semibold text-foreground">Total</span>
-                  <span className="text-2xl font-bold text-primary">{formatPrice(cartTotal)}</span>
+                  <span className="text-2xl font-bold text-primary">{formatPrice(finalTotal)}</span>
                 </div>
               </div>
 

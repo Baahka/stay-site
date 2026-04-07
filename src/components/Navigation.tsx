@@ -1,9 +1,10 @@
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useState } from 'react';
+import { CartDrawer } from '@/components/CartDrawer';
 
 export function Navigation() {
-  const { cartCount, setCurrentPage } = useApp();
+  const { setCurrentPage } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -59,18 +60,7 @@ export function Navigation() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
-            {/* Cart */}
-            <button
-              onClick={() => setCurrentPage('checkout')}
-              className="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs font-bold rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+            <CartDrawer />
 
             {/* Mobile menu button */}
             <button

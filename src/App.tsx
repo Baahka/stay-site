@@ -8,12 +8,18 @@ import { CheckoutPage } from '@/pages/CheckoutPage';
 import './App.css';
 
 function AppContent() {
-  const { currentPage } = useApp();
+  const { currentPage, setCartOpen } = useApp();
 
   // Scroll to top on page change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
+
+  useEffect(() => {
+    if (currentPage === 'cart') {
+      setCartOpen(true);
+    }
+  }, [currentPage, setCartOpen]);
 
   return (
     <div className="relative min-h-screen bg-midnight">
@@ -30,6 +36,7 @@ function AppContent() {
       <div className="relative z-10">
         {currentPage === 'home' && <HomePage />}
         {currentPage === 'shop' && <ShopPage />}
+        {currentPage === 'cart' && <ShopPage />}
         {currentPage === 'product' && <ProductPage />}
         {currentPage === 'checkout' && <CheckoutPage />}
       </div>
