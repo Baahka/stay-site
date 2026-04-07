@@ -33,7 +33,7 @@ export function SupportSection() {
   }, []);
 
   const openDiscord = () => {
-    window.open('https://discord.gg', '_blank');
+    window.open('https://discord.gg/UDrM8bTrrU', '_blank');
   };
 
   return (
