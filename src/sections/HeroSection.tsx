@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 export function HeroSection() {
-  const { setCurrentPage, addToCart, setSelectedProduct } = useApp();
+  const { setCurrentPage, addToCart, setSelectedProduct, setCartOpen } = useApp();
   const featuredProduct = getFeaturedProducts()[0];
   const heroRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export function HeroSection() {
     e.stopPropagation();
     if (featuredProduct) {
       addToCart(featuredProduct);
-      setCurrentPage('checkout');
+      setCartOpen(true);
     }
   };
 

@@ -5,7 +5,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
 
 export function ProductPage() {
-  const { selectedProduct, setCurrentPage, addToCart } = useApp();
+  const { selectedProduct, setCurrentPage, addToCart, setCartOpen } = useApp();
   const [added, setAdded] = useState(false);
 
   const formatPrice = (price: number) => {
@@ -36,7 +36,7 @@ export function ProductPage() {
 
   const handleBuyNow = () => {
     addToCart(selectedProduct);
-    setCurrentPage('checkout');
+    setCartOpen(true);
   };
 
   // Get related products (same category, exclude current)
